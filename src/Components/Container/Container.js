@@ -1,22 +1,31 @@
 import classes from "./Container.module.css";
 import Count from "../Counts/Count";
 import Button from "../Button/Button";
-import React from "react";
+import React, { useContext } from "react";
+import pomodoroContext from "../../store-context/timeContext";
 
 const Container = () => {
+  const ctx = useContext(pomodoroContext);
+  console.log(ctx.second);
+  // console.log(ctx.minute + " " + ctx.second);
+
   return (
     <React.Fragment>
       <div className={classes.div}>
-        <Count>0</Count>
-        <Count>0</Count>
+        <Count>{ctx.minute < 10 ? "0" : ""}{ctx.minute}</Count>
         <p>:</p>
-        <Count>0</Count>
-        <Count>0</Count>
+        <Count>{ctx.second < 10 ? "0" : ""}{ctx.second}</Count>
       </div>
       <div className={classes.btnContainer}>
-        <Button className = {classes.btn}>start</Button>
-        <Button className = {classes.btn}>stop</Button>
-        <Button className = {classes.btn}>reset</Button>
+        <Button className={classes.btn} callFunction={ctx.start}>
+          start
+        </Button>
+        <Button className={classes.btn} callFunction={ctx.stop}>
+          stop
+        </Button>
+        <Button className={classes.btn} callFunction={ctx.reset}>
+          reset
+        </Button>
       </div>
     </React.Fragment>
   );

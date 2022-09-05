@@ -1,15 +1,17 @@
 .div{
     width: 50%;
     height: 50%;
-    /* border: 5px solid; */
+    border: 5px solid;
     font-size: 20rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    /* overflow: hidden; */
+    background-color: red;
 }
 
 p{
-    /* border: 3px solid; */
+    border: 3px solid;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,8 +20,8 @@ p{
 }
 
 .btnContainer{
-    /* border: 3px solid red; */
-    width: 50%;
+    border: 3px solid red;
+    width: 40%;
     display: flex;
     justify-content: space-around
 }

@@ -1,11 +1,10 @@
-
-import './App.css';
+import { PomodoroContextProvider } from './store-context/timeContext';
 import UI from './UI/UI';
 
 function App() {
-  return (
- <UI/>
-  );
+  return <PomodoroContextProvider>
+    <UI/>
+  </PomodoroContextProvider>;
 }
 
 export default App;
