@@ -1,51 +1,94 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 const pomodoroContext = React.createContext({
+  minute: 0,
   second: 0,
   lap: 0,
-  increaseTimeHandler() {},
-  updateLap() {},
-  start() {},
-  stop() {},
-  reset() {},
+  message: "working time",
 });
 
+let hasStarted = false;
 let storeInterval = null;
+const WORK_DURATION = 2;
+const REST_DURATION = 1;
+const LONG_REST_DURATION = 2;
+
+const isTaskCompleted = (currentLap, passedMinutes) => {
+
+  if (currentLap % 6 === 0 && passedMinutes === LONG_REST_DURATION)
+    return "working time";
+  if (
+    currentLap % 2 === 0 &&
+    currentLap % 6 !== 0 &&
+    passedMinutes === REST_DURATION
+  )
+    return "working time";
+
+  if (currentLap % 5 === 0 && passedMinutes === WORK_DURATION)
+    return "long rest time";
+
+  if (currentLap % 2 !== 0 && passedMinutes === WORK_DURATION)
+    return "rest time";
+
+    return false;
+};
 
 export const PomodoroContextProvider = (props) => {
-    const ctx = useContext(pomodoroContext);
   const [second, setSecond] = useState(0);
   const [minute, setMinute] = useState(0);
+  const [message, setMessage] = useState("press START to start timer");
   const [lap, setLap] = useState(0);
 
-  const increaseTimeHandler = () => {
- 
-    if(ctx.second <10){
-        console.log(ctx.second );
-        console.log("hello ");
+  const increaseSecondHandler = () => {
+    setSecond((prevSec) => {
+      prevSec += 1;
+      if (prevSec === 60) {
+        increaseMinuteHandler();
+        return 0;
+      }
+      return prevSec;
+    });
+  };
 
-    }
+  const increaseMinuteHandler = () => {
+    setMinute((prevMin) => {
+      prevMin += 1;
+      increaseLapHandler(prevMin);
+      return prevMin;
+    });
+  };
 
-    // if (second == 10) {
-    //   console.log("hello");
-    //   setSecond(0);
-    //   setMinute((prevMin) => prevMin + 1);
-    // } else
-         setSecond((prevSec) => prevSec + 1);
+  const increaseLapHandler = (currMin) => {
+    setLap((prevLap) => {
+      // prevLap += 1;
+      const currentTask = isTaskCompleted(prevLap, currMin);
+      if (currentTask) {
+        setMinute(0);
+        setSecond(0);
+        setMessage(() => currentTask);
+        return prevLap + 1;
+      }
+      else setMessage((prevMessage) => prevMessage);
+      return prevLap;
+    });
   };
 
   const startHandler = () => {
-    if (storeInterval != null) clearInterval(storeInterval);
-    storeInterval = setInterval(increaseTimeHandler, 1000);
-  };
-
-  const updateLapHandler = () => {
-    setLap((prevLap) => prevLap + 1);
+    if (hasStarted) clearInterval(storeInterval);
+    storeInterval = setInterval(increaseSecondHandler, 1000);
+    if (!hasStarted) {
+      setLap(() => {
+        setMessage(() => "working time");
+        hasStarted = true;
+        return 1;
+      });
+    }
   };
 
   const stopHandler = () => {
     clearInterval(storeInterval);
     storeInterval = null;
+    hasStarted = false;
   };
 
   const resetHandler = () => {
@@ -54,18 +97,17 @@ export const PomodoroContextProvider = (props) => {
     setLap(0);
     if (storeInterval != null) stopHandler();
   };
-
   return (
     <pomodoroContext.Provider
       value={{
         second: second,
         minute: minute,
         lap: lap,
-        increaseTime: increaseTimeHandler,
-        updateLap: updateLapHandler,
+        message: message,
         start: startHandler,
         stop: stopHandler,
         reset: resetHandler,
+        isTaskCompleted: isTaskCompleted,
       }}
     >
       {props.children}

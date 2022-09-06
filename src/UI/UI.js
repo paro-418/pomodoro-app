@@ -1,10 +1,30 @@
 import Container from "../Components/Container/Container";
 import classes from "./UI.module.css";
+import Button from "../Components/Button/Button";
+import pomodoroContext from "../store-context/timeContext";
+import { useContext } from "react";
+import Message from "../Components/Message/Message";
 
 const UI = () => {
-  return <main className = {classes.main}>
-    <Container/>
-  </main>;
+
+  const ctx = useContext(pomodoroContext);
+  return (
+    <main className={classes.main}>
+      <Container />
+      <div className={classes.btnContainer}>
+        <Button className={classes.btn} callFunction={ctx.start}>
+          start
+        </Button>
+        <Button className={classes.btn} callFunction={ctx.stop}>
+          stop
+        </Button>
+        <Button className={classes.btn} callFunction={ctx.reset}>
+          reset
+        </Button>
+      </div>
+      <Message/>
+    </main>
+  );
 };
 
 export default UI;
