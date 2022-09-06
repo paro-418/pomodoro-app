@@ -10,6 +10,7 @@ const UI = () => {
   const ctx = useContext(pomodoroContext);
   return (
     <main className={classes.main}>
+      <Message>Pomodoro App</Message>
       <Container />
       <div className={classes.btnContainer}>
         <Button className={classes.btn} callFunction={ctx.start}>
@@ -22,7 +23,7 @@ const UI = () => {
           reset
         </Button>
       </div>
-      <Message/>
+      <Message>{ctx.message}</Message>
     </main>
   );
 };
