@@ -1,6 +1,7 @@
 import Container from "../Components/Container/Container";
 import classes from "./UI.module.css";
 import Button from "../Components/Button/Button";
+import Form from "../Components/Form/Form";
 import pomodoroContext from "../store-context/timeContext";
 import { useContext } from "react";
 import Message from "../Components/Message/Message";
@@ -11,6 +12,7 @@ const UI = () => {
   return (
     <main className={classes.main}>
       <Message>Pomodoro App</Message>
+      <Form/>
       <Container />
       <div className={classes.btnContainer}>
         <Button className={classes.btn} callFunction={ctx.start}>

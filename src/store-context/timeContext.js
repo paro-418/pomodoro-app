@@ -5,13 +5,20 @@ const pomodoroContext = React.createContext({
   second: 0,
   lap: 0,
   message: "working time",
+  dataCollector(){}
 });
 
 let hasStarted = false;
 let storeInterval = null;
-const WORK_DURATION = 2;
-const REST_DURATION = 1;
-const LONG_REST_DURATION = 2;
+let WORK_DURATION = 2;
+let REST_DURATION = 1;
+let LONG_REST_DURATION = 2;
+
+const dataCollector = (workInterval, restInterval) =>{
+  WORK_DURATION = workInterval;
+  REST_DURATION = restInterval;
+  LONG_REST_DURATION = workInterval;
+}
 
 const isTaskCompleted = (currentLap, passedMinutes) => {
 
@@ -60,7 +67,6 @@ export const PomodoroContextProvider = (props) => {
 
   const increaseLapHandler = (currMin) => {
     setLap((prevLap) => {
-      // prevLap += 1;
       const currentTask = isTaskCompleted(prevLap, currMin);
       if (currentTask) {
         setMinute(0);
@@ -107,7 +113,7 @@ export const PomodoroContextProvider = (props) => {
         start: startHandler,
         stop: stopHandler,
         reset: resetHandler,
-        isTaskCompleted: isTaskCompleted,
+        dataCollector : dataCollector
       }}
     >
       {props.children}

@@ -1,0 +1,47 @@
+
+form{
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+@media only screen and (max-width: 800px){
+   form{
+    width: 80%;
+   }
+}
+
+@media only screen and (max-width: 380px){
+   form{
+    border: 3px solid;
+    flex-direction: column;
+    width: 80%;
+    row-gap: 1rem;
+   }
+}
+
+
+input{
+    display: inline-block;
+    width: 48%;
+    padding: 0.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 800px){
+   input{
+    font-size: 1.5rem;
+   }
+}
+@media only screen and (max-width: 380px){
+   input{
+    font-size: 1.5rem;
+    width: 100%;
+   }
+}
+input::placeholder{
+    word-spacing: 0.5rem;
+    font-weight: 500;
+}
